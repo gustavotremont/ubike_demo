@@ -4,7 +4,7 @@ const logger = require('morgan');
 const path = require('path');
 require('dotenv').config();
 
-const { sequelize, Provider, Product } = require('./models')
+const { sequelize } = require('./models')
 
 /****************** Enable Express ******************/
 const app = express();
@@ -23,6 +23,9 @@ const indexProducts = require('./routes/products');
 /****************** Routes ******************/
 app.use('/api', indexProviders);
 app.use('/api', indexProducts);
+app.get('/', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 /****************** Actice Server ******************/
 app.listen(port, async () => {
