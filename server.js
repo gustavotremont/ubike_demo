@@ -18,33 +18,11 @@ app.use(logger('dev'));
 
 /****************** Import routes ******************/
 const indexProviders = require('./routes/providers');
+const indexProducts = require('./routes/products');
 
 /****************** Routes ******************/
 app.use('/api', indexProviders);
-
-app.post('/products', async(req, res) => {
-    const { providerUuid, name, price, rating } = req.body
-
-    try {
-        const provider = await Provider.findOne({ where: {uuid: providerUuid} })
-
-        const product = await Product.create({ name, price, rating, providerId: provider.id })
-        return res.status(200).json(product)
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error)
-    }
-})
-
-app.get('/products', async(req, res) => {
-    try {
-        const products = await Product.findAll({ include: 'provider' })
-        return res.status(200).json(products)
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error)
-    }
-})
+app.use('/api', indexProducts);
 
 /****************** Actice Server ******************/
 app.listen(port, async () => {
