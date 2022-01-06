@@ -16,38 +16,11 @@ app.use(express.urlencoded( { extended: false } ));
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(logger('dev'));
 
-app.post('/providers', async(req, res) => {
-    const { name, cif, address } = req.body
+/****************** Import routes ******************/
+const indexProviders = require('./routes/providers');
 
-    try {
-        const provider = await Provider.create({name, cif, address})
-        return res.status(200).json(provider)
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error)
-    }
-})
-
-app.get('/providers', async(req, res) => {
-    try {
-        const providers = await Provider.findAll()
-        return res.status(200).json(providers)
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error)
-    }
-})
-
-app.get('/providers/:uuid', async(req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const provider = await Provider.findOne({ where: { uuid }, include: 'products' })
-        return res.status(200).json(provider)
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error)
-    }
-})
+/****************** Routes ******************/
+app.use('/api', indexProviders);
 
 app.post('/products', async(req, res) => {
     const { providerUuid, name, price, rating } = req.body
