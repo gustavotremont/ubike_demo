@@ -11,6 +11,7 @@ module.exports = {
       uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        unique: true
       },
       name: {
         allowNull: false,
@@ -18,15 +19,28 @@ module.exports = {
       },
       price: {
         allowNull: false,
-        type: DataTypes.DECIMAL(10,2)
+        type: DataTypes.FLOAT
       },
       rating: {
         allowNull: false,
         type: DataTypes.SMALLINT
       },
+      image: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
       providerId: {
         allowNull: false,
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
