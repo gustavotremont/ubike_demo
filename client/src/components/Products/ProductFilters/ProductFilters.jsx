@@ -4,23 +4,13 @@ import { productsContext } from '../../../context/productsContext'
 function ProductFilters() {
   const {productList, setProductList} = useContext(productsContext)
 
-  const [sortName, setSortName] = useState(false)
-  const [sortRating, setSortRating] = useState(false)
-  const [sortPrice, setSortPrice] = useState(false)
-
-  // const compare = (a, b, field) => {
-  //   if ( a[field] < b[field] ){
-  //     return -1;
-  //   }
-  //   if ( a[field] > b[field] ){
-  //     return 1;
-  //   }
-  //   return 0;
-  // }
+  const [sortName, setSortName] = useState(null)
+  const [sortRating, setSortRating] = useState(null)
+  const [sortPrice, setSortPrice] = useState(null)
 
   const sortByName = () => {
     sortName ? setSortName(false) : setSortName(true)
-    const sortArray = productList
+    const sortArray = [...productList]
 
     sortArray.sort( (a,b) => b.name.localeCompare(a.name) )
     if(!sortName) sortArray.reverse()
@@ -30,7 +20,7 @@ function ProductFilters() {
 
   const sortByRating = () => {
     sortRating ? setSortRating(false) : setSortRating(true)
-    const sortArray = productList
+    const sortArray = [...productList]
 
     sortArray.sort( (a,b) => a.rating-b.rating )
     if(!sortRating) sortArray.reverse()
@@ -40,7 +30,7 @@ function ProductFilters() {
 
   const sortByPrice = () => {
     sortPrice ? setSortPrice(false) : setSortPrice(true)
-    const sortArray = productList
+    const sortArray = [...productList]
 
     sortArray.sort( (a,b) => a.price-b.price )
     if(!sortPrice) sortArray.reverse()
@@ -48,13 +38,16 @@ function ProductFilters() {
     setProductList(sortArray)
   }
 
+  const setArrow = (sort) => {
+    return sort ? <span>&#8657;</span> : sort === false ? <span>&#8659;</span> : null  
+  }
+
   return (
     <article>
       <h3>Filtros de Busqueda</h3>
-      <button onClick={sortByName} >Nombre</button>
-      <button onClick={sortByRating} >Rating</button>
-      <button onClick={sortByPrice} >Precio</button>
-      
+      <button onClick={sortByName} >Nombre { setArrow(sortName) } </button>
+      <button onClick={sortByRating} >Rating { setArrow(sortRating) } </button>
+      <button onClick={sortByPrice} >Precio { setArrow(sortPrice) } </button>
     </article>
   )
 }
