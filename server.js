@@ -13,7 +13,7 @@ const port = process.env.PORT || 5000;
 /****************** Express Settings ******************/
 app.use(express.json());
 app.use(express.urlencoded( { extended: false } ));
-app.use(express.static(path.join(__dirname, 'client/build')));
+// app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(logger('dev'));
 
 /****************** Import routes ******************/
@@ -23,9 +23,9 @@ const indexProducts = require('./routes/products');
 /****************** Routes ******************/
 app.use('/api', indexProviders);
 app.use('/api', indexProducts);
-app.get('/', (req,res) =>{
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+// app.get('/', (req,res) =>{
+//     res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// });
 
 /****************** Actice Server ******************/
 app.listen(port, async () => {

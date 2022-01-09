@@ -1,13 +1,16 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import axios from 'axios'
+import { productsContext } from '../../context/productsContext'
 
-function SearchBar({setProductList}) {
+function SearchBar() {
+
+  const {setProductList} = useContext(productsContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const searchText = e.target['search-bar'].value
 
-    const res = await axios.get(`/api/products/?search=${searchText}`)
+    const res = await axios.get(`/api/products/?search=${searchText.trim()}`)
 
     setProductList(res.data.products)
   } 

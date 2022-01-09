@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import SearchBar from '../SearchBar'
 import ProductList from '../Products/ProductList'
+import { productsContext } from '../../context/productsContext' 
 import axios from 'axios'
 
 function Home() {
-
   const [productList, setProductList] = useState([])
 
   useEffect(() => {
@@ -17,10 +17,14 @@ function Home() {
     productListPreLoad()
   }, [])
 
+  const productObj = {productList, setProductList}
+
   return (
     <section>
-      <SearchBar setProductList={setProductList} />
-      <ProductList productList={productList} setProductList={setProductList}/>
+      <productsContext.Provider value={productObj}>
+          <SearchBar/>
+          <ProductList productList={productList} setProductList={setProductList}/>
+      </productsContext.Provider>  
     </section>
   )
 }
