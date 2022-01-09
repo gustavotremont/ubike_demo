@@ -1,59 +1,74 @@
 const { Product } = require('../models')
 const { Op } = require("sequelize");
 
-// app.post('/products', async(req, res) => {
-//     const { providerUuid, name, price, rating } = req.body
+const getProductsBySearch = async (search) => {
+    const searchElements = search.split(' ').map(element => `%${element}%`)
 
-//     try {
-//         const provider = await Provider.findOne({ where: {uuid: providerUuid} })
+    const products = await Product.findAll({ 
+        where: {
+            [Op.or]: {
+                name: {
+                    [Op.iLike]: { [Op.any]: searchElements }
+                },
+                '$provider.name$': {
+                    [Op.iLike]: { [Op.any]: searchElements }
+                } 
+            }
+        },
+        attributes: { 
+            exclude: ['createdAt', 'updatedAt', 'type', 'description'] 
+        },
+        include: { 
+            association: 'provider',
+            attributes: ['name']
+        }  
+    })
 
-//         const product = await Product.create({ name, price, rating, providerId: provider.id })
-//         return res.status(200).json(product)
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json(error)
-//     }
-// })
+    return products
+}
+
+const getProductByUUID = async (uuid) => {
+    const product = await Product.findOne({ 
+        where: { uuid }, 
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: { 
+            association: 'provider',
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+        } 
+    })
+
+    return product
+}
+
+const getAllProducts = async () => {
+    const products = await Product.findAll({ 
+        attributes: { 
+            exclude: ['createdAt', 'updatedAt', 'type', 'description'] 
+        },
+        include: { 
+            association: 'provider',
+            attributes: ['name']
+        }  
+    })
+
+    return products
+
+}
 
 const getProducts = async (req, res) => {
     try {
-        const search = req.query.search
+        const { search, uuid } = req.query
         
         if(search){
-            const searchElements = search.split(' ').map(element => `%${element}%`)
-
-            const products = await Product.findAll({ 
-                where: {
-                    [Op.or]: {
-                        name: {
-                            [Op.iLike]: { [Op.any]: searchElements }
-                        },
-                        '$provider.name$': {
-                            [Op.iLike]: { [Op.any]: searchElements }
-                        } 
-                    }
-                },
-                attributes: { 
-                    exclude: ['createdAt', 'updatedAt', 'type', 'description'] 
-                },
-                include: { 
-                    association: 'provider',
-                    attributes: ['name']
-                }  
-            })
-            
+            const products = await getProductsBySearch(search)
             return res.status(200).json({status: 'success', products})
 
+        }else if(uuid){
+            const product = await getProductByUUID(uuid)
+            return res.status(200).json({status: 'success', product})
+
         }else{
-            const products = await Product.findAll({ 
-                attributes: { 
-                    exclude: ['createdAt', 'updatedAt', 'type', 'description'] 
-                },
-                include: { 
-                    association: 'provider',
-                    attributes: ['name']
-                }  
-            })
+            const products = await getAllProducts()
             return res.status(200).json({status: 'success', products})
 
         }
@@ -63,27 +78,8 @@ const getProducts = async (req, res) => {
     }
 }
 
-const getProductByUUID = async (req, res) => {
-    const uuid = req.params.uuid
-    try {
-        const product = await Product.findOne({ 
-                where: { uuid }, 
-                attributes: { exclude: ['createdAt', 'updatedAt'] },
-                include: { 
-                    association: 'provider',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                } 
-        })
-        return res.status(200).json({status: 'success', product})
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({status: 'error', error: err})
-    }
-}
-
 const products = {
-    getProducts,
-    getProductByUUID
+    getProducts
 }
 
 module.exports = products
