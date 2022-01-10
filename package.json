@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently -n 'server,client' -c 'green,blue' \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -25,5 +28,8 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.12.5"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
   }
 }
