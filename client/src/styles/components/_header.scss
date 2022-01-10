@@ -1,0 +1,18 @@
+.header {
+    background-color: $secondary-color;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    &--logo {
+        font-size: 36px;
+        color: white;
+
+        &--first-letter {
+            color: $primary-color;
+        }
+    }
+}
+

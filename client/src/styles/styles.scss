@@ -1,0 +1,15 @@
+//utils
+@import './utils/variables.scss';
+@import './utils/mixins.scss';
+
+//components
+@import './components/header';
+@import './components/main';
+@import './components/home';
+@import './components/searchBar';
+@import './components/productFilters';
+@import './components/productCard';
+@import './components/productDetail';
+
+//views
+@import './views/app'

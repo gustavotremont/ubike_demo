@@ -8,34 +8,26 @@ function ProductFilters() {
   const [sortRating, setSortRating] = useState(null)
   const [sortPrice, setSortPrice] = useState(null)
 
-  const sortByName = () => {
-    sortName ? setSortName(false) : setSortName(true)
-    const sortArray = [...productList]
+  const handleSort = (event) => {
+    const sorts = {sortName, sortRating, sortPrice} // sort Value Objet
+    const setSorts = {setSortName, setSortRating, setSortPrice} // setSort functions Objet
+    const sortOption = event.target.id // name of sort method
+    const sortSetName = 'set' + sortOption.charAt(0).toUpperCase() + sortOption.slice(1) // name of setSort function
+    const sortFieldName = sortOption.replace("sort", "").toLowerCase(); // name of field to sort
+    const sortArray = [...productList] // temp array
 
-    sortArray.sort( (a,b) => b.name.localeCompare(a.name) )
-    if(!sortName) sortArray.reverse()
+    sorts[sortOption] ? setSorts[sortSetName](false) : setSorts[sortSetName](true)
 
-    setProductList(sortArray)
-  }
+    sortOption === 'sortName'
+        ? sortArray.sort( (a,b) => b[sortFieldName].localeCompare(a[sortFieldName]) )
+        : sortArray.sort( (a,b) => a[sortFieldName]-b[sortFieldName] )
+    if(!sorts[sortOption]) sortArray.reverse()
 
-  const sortByRating = () => {
-    sortRating ? setSortRating(false) : setSortRating(true)
-    const sortArray = [...productList]
+    for (const set in setSorts) {
+      if( set !== sortSetName ) setSorts[set](null)
+    }
 
-    sortArray.sort( (a,b) => a.rating-b.rating )
-    if(!sortRating) sortArray.reverse()
-
-    setProductList(sortArray)
-  }
-
-  const sortByPrice = () => {
-    sortPrice ? setSortPrice(false) : setSortPrice(true)
-    const sortArray = [...productList]
-
-    sortArray.sort( (a,b) => a.price-b.price )
-    if(!sortPrice) sortArray.reverse()
-
-    setProductList(sortArray)
+    setProductList(sortArray)    
   }
 
   const setArrow = (sort) => {
@@ -43,11 +35,13 @@ function ProductFilters() {
   }
 
   return (
-    <article>
-      <h3>Filtros de Busqueda</h3>
-      <button onClick={sortByName} >Nombre { setArrow(sortName) } </button>
-      <button onClick={sortByRating} >Rating { setArrow(sortRating) } </button>
-      <button onClick={sortByPrice} >Precio { setArrow(sortPrice) } </button>
+    <article className='filters'>
+      <h3 className='filters--text' >Filtros de Busqueda</h3>
+      <section className='filters--buttons'>
+        <button id='sortName' className='filters--buttons--button' onClick={handleSort} >Nombre { setArrow(sortName) } </button>
+        <button id='sortRating' className='filters--buttons--button' onClick={handleSort} >Rating { setArrow(sortRating) } </button>
+        <button id='sortPrice' className='filters--buttons--button' onClick={handleSort} >Precio { setArrow(sortPrice) } </button>
+      </section>
     </article>
   )
 }

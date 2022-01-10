@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import Rating from 'react-rating'
 import axios from 'axios'
 
 function ProductDetail() {
@@ -20,30 +21,36 @@ function ProductDetail() {
   }, [])
 
   return (
-    <>
+    <section className='details'>
+      <Link to={`/`} > <h4>Regresar</h4> </Link>
       {
         loading 
-          ? <p>Loading...</p>
-          : <section key={productDetail.uuid}>
-              <article>
+          ? <p>loading</p> 
+          : <section key={productDetail.uuid} className='details--body' >
+
+              <article className='details--body--product'>
+                <p>{productDetail.name}</p>
+                <p>{productDetail.price}</p>
+              </article>
+
+              <article className='details--body--image'>
                 <img src={productDetail.image} alt={productDetail.name} />
               </article>
 
-              <article>
-                <p>{productDetail.name}</p>
-                <p>{productDetail.price}</p>
-                <p>{productDetail.rating}</p>
+              <article className='details--body--product'>
                 <p>{productDetail.description}</p>
+                <Rating className='product-card--rating' initialRating={productDetail.rating} readonly emptySymbol='fa fa-star-o fa-2x medium'
+ fullSymbol='fa fa-star fa-2x medium' />
               </article>
 
-              <article>
+              <article className='details--body--provider'>
                 <p>{productDetail.provider.name}</p>
                 <p>{productDetail.provider.cif}</p>
                 <p>{productDetail.provider.address}</p>
               </article>
             </section>
       }
-    </>
+    </section>
   )
 }
 

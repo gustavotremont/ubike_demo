@@ -16,12 +16,12 @@ function SearchBar() {
   } 
 
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="search-bar">Buscar Productos</label>
-        <input type="text" id='search-bar' name='search-bar' />
+    <section className='search'>
+      <form className='search--form' onSubmit={handleSubmit}>
+        <label className='search--form--label' htmlFor="search-bar">Buscar Productos</label>
+        <input className='search--form--input' type="text" id='search-bar' name='search-bar' />
 
-        <input type="submit" value="Buscar" />
+        <input className='search--form--button' type="submit" value="Buscar" />
       </form>
     </section>
   )

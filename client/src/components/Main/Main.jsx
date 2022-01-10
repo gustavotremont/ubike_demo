@@ -6,7 +6,7 @@ import ProductDetail from '../Products/ProductDetail';
 
 function Main() {
   return (
-    <main>
+    <main className='main'>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/product' element={<ProductDetail/>}/>

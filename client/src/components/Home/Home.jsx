@@ -20,10 +20,10 @@ function Home() {
   const productObj = {productList, setProductList}
 
   return (
-    <section>
+    <section className='home'>
       <productsContext.Provider value={productObj}>
           <SearchBar/>
-          <ProductList productList={productList} setProductList={setProductList}/>
+          <ProductList/>
       </productsContext.Provider>  
     </section>
   )
