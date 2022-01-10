@@ -4,7 +4,12 @@
   "description": "Ubike ecommerce demo website, presented for the individual final project of The Bridge.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently -n 'server,client' -c 'green,blue' \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -16,5 +21,16 @@
   "bugs": {
     "url": "https://github.com/gustavotremont/ubike_demo/issues"
   },
-  "homepage": "https://github.com/gustavotremont/ubike_demo#readme"
+  "homepage": "https://github.com/gustavotremont/ubike_demo#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.12.5"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
 }

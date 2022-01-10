@@ -1,0 +1,26 @@
+.search {
+    width: 100%;
+
+    &--form { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &--label {
+            font-size: 32px;
+            color: $secondary-color;
+            margin-bottom: 8px;
+        }
+
+        &--input {
+            width: 80%;
+            padding: 4px 0;
+        }
+
+        &--button {
+            margin-top: 8px;
+            height: 24px;
+            width: 40%;
+        }
+    }
+}
